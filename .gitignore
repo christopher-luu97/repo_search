@@ -5,3 +5,4 @@ llama.cpp/
 tree-sitter-python/
 utilities.py
 *.ipynb
+node_modules/
