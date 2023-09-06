@@ -46,41 +46,39 @@ export function Explorer() {
   // }, [fileTree, mappedFileItems]);
 
   return (
-    <div className="flex flex-grow my-10 border border-red-400">
-      <div className="flex flex-col w-1/4 px-4 h-full border border-red-400">
-        <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center h-full border border-red-400 ">
-          <h1 className="text-3xl font-bold mb-4">Folder Upload</h1>
+    <div className="flex flex-grow">
+      <div className="w-1/4 navbar-bg h-full">
+        <h1 className="text-3xl font-bold mb-4">Folder Upload</h1>
 
-          <FolderInput onChange={handleInputChange} />
-          {fileTree && (
-            <div className="overflow-y-auto max-h-[400px]">
-              <TreeFileComponent
-                data={fileTree}
-                root={root}
-                onSelectItems={(items, treeId) => {
-                  let fullPath = null;
-                  // Set the full path of the item to be rendered if it exists
-                  Object.keys(mappedFileItems).forEach((key) => {
-                    if (key.endsWith(items.join("/"))) {
-                      fullPath = key;
-                    }
-                  });
-                  if (fullPath) {
-                    const file = mappedFileItems[fullPath]; //mappedFileItems[items[0]];
-                    setCurrentSelectFile(URL.createObjectURL(file));
-                  } else {
-                    setCurrentSelectFile(null);
+        <FolderInput onChange={handleInputChange} />
+        {fileTree && (
+          <div className="overflow-y-auto max-h-[400px]">
+            <TreeFileComponent
+              data={fileTree}
+              root={root}
+              onSelectItems={(items, treeId) => {
+                let fullPath = null;
+                // Set the full path of the item to be rendered if it exists
+                Object.keys(mappedFileItems).forEach((key) => {
+                  if (key.endsWith(items.join("/"))) {
+                    fullPath = key;
                   }
-                }}
-              />
-            </div>
-          )}
-        </div>
+                });
+                if (fullPath) {
+                  const file = mappedFileItems[fullPath]; //mappedFileItems[items[0]];
+                  setCurrentSelectFile(URL.createObjectURL(file));
+                } else {
+                  setCurrentSelectFile(null);
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
-      <div className="flex flex-1 w-full h-full">
+      <div className="flex-grow main-content-bg">
         {currentSelectFile && (
           <embed
-            className="w-full h-full border-none"
+            className="w-full h-full border border-red-400"
             src={currentSelectFile}
           />
         )}

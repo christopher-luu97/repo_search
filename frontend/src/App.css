@@ -40,3 +40,11 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar-bg {
+  background-color: #3498db; /* Blue color for the navbar */
+}
+
+.main-content-bg {
+  background-color: #ccc; /* Gray color for the main content */
+}

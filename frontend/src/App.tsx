@@ -7,9 +7,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col">
       <Header />
-      <div className="flex-grow overflow-y-auto h-[calc(100vh - 100px)]">
-        <Explorer />
-      </div>
+      <Explorer />
       <Footer />
     </div>
   );
