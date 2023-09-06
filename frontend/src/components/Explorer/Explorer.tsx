@@ -38,10 +38,17 @@ export function Explorer() {
     }
   };
 
+  // For debugging, import useEffect as well
+  // useEffect(() => {
+  //   // This effect will run whenever fileTree or mappedFileItems change
+  //   console.log("File Tree updated: ", fileTree);
+  //   console.log("Mapped File Items updated: ", mappedFileItems);
+  // }, [fileTree, mappedFileItems]);
+
   return (
-    <div className="flex flex-grow my-10">
-      <div className="flex flex-col w-1/4 px-4">
-        <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
+    <div className="flex flex-grow my-10 border border-red-400">
+      <div className="flex flex-col w-1/4 px-4 h-full border border-red-400">
+        <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center h-full border border-red-400 ">
           <h1 className="text-3xl font-bold mb-4">Folder Upload</h1>
 
           <FolderInput onChange={handleInputChange} />
@@ -51,8 +58,15 @@ export function Explorer() {
                 data={fileTree}
                 root={root}
                 onSelectItems={(items, treeId) => {
-                  const file = mappedFileItems[items[0]];
-                  if (file) {
+                  let fullPath = null;
+                  // Set the full path of the item to be rendered if it exists
+                  Object.keys(mappedFileItems).forEach((key) => {
+                    if (key.endsWith(items.join("/"))) {
+                      fullPath = key;
+                    }
+                  });
+                  if (fullPath) {
+                    const file = mappedFileItems[fullPath]; //mappedFileItems[items[0]];
                     setCurrentSelectFile(URL.createObjectURL(file));
                   } else {
                     setCurrentSelectFile(null);
@@ -61,15 +75,15 @@ export function Explorer() {
               />
             </div>
           )}
-          <div style={{ flex: 1 }}>
-            {currentSelectFile && (
-              <embed
-                style={{ width: "100%", height: "100%" }}
-                src={currentSelectFile}
-              />
-            )}
-          </div>
         </div>
+      </div>
+      <div className="flex flex-1 w-full h-full">
+        {currentSelectFile && (
+          <embed
+            className="w-full h-full border-none"
+            src={currentSelectFile}
+          />
+        )}
       </div>
     </div>
   );
