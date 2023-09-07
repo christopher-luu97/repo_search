@@ -6,3 +6,5 @@ tree-sitter-python/
 utilities.py
 *.ipynb
 node_modules/
+__pychace__/
+*.pyc

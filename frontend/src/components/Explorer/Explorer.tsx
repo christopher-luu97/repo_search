@@ -3,6 +3,7 @@ import { TreeFileComponent } from "./TreeFileComponent";
 import { TreeFileComponentProps } from "./TreeFileComponent";
 import { useState } from "react";
 import { convertListFileToObjectParentTree, readTemplate } from "../../utils";
+import { CommandLineInterface } from "../CommandLine/CommandLineInterface";
 
 type MappedFiles = {
   [key: string]: File;
@@ -18,6 +19,7 @@ export function Explorer() {
     string | null | undefined
   >(null);
   const [isNavbarCollapsed, setIsNavBarCollapsed] = useState<boolean>(false);
+  const [height, setHeight] = useState(450); // Initial width of main-content
 
   const handleInputChange = (files: FileList | null) => {
     if (files) {
@@ -41,6 +43,12 @@ export function Explorer() {
 
   const toggleNavbar = () => {
     setIsNavBarCollapsed(!isNavbarCollapsed);
+  };
+
+  const handleCommandLineSubmit = (command: string) => {
+    // Process the command here
+    // For this example, I'm just logging it
+    console.log(`Received command: ${command}`);
   };
 
   // For debugging, import useEffect as well
@@ -91,13 +99,17 @@ export function Explorer() {
           </div>
         )}
       </div>
-      <div className="flex-grow main-content-bg">
+      <div
+        className="main-content-bg w-full"
+        style={{
+          height: `${height}px`,
+          border: "1px solid red", // Adjust the border style as needed
+        }}
+      >
         {currentSelectFile && (
-          <embed
-            className="w-full h-full border border-red-400"
-            src={currentSelectFile}
-          />
+          <embed className="w-full h-full" src={currentSelectFile} />
         )}
+        <CommandLineInterface onSubmit={handleCommandLineSubmit} />
       </div>
     </div>
   );
