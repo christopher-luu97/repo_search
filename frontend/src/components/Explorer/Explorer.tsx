@@ -17,6 +17,7 @@ export function Explorer() {
   const [currentSelectFile, setCurrentSelectFile] = useState<
     string | null | undefined
   >(null);
+  const [isNavbarCollapsed, setIsNavBarCollapsed] = useState<boolean>(false);
 
   const handleInputChange = (files: FileList | null) => {
     if (files) {
@@ -38,6 +39,10 @@ export function Explorer() {
     }
   };
 
+  const toggleNavbar = () => {
+    setIsNavBarCollapsed(!isNavbarCollapsed);
+  };
+
   // For debugging, import useEffect as well
   // useEffect(() => {
   //   // This effect will run whenever fileTree or mappedFileItems change
@@ -47,9 +52,20 @@ export function Explorer() {
 
   return (
     <div className="flex flex-grow">
-      <div className="w-1/4 navbar-bg h-full">
+      <button
+        onClick={toggleNavbar}
+        className={`text-white p-2 rounded-lg bg-blue-500 hover:bg-blue-600 z-10 ${
+          isNavbarCollapsed ? "w-6" : "w-6" // Adjust the width here
+        }`}
+      >
+        <p className="flex justify-center align-middle">{">>"}</p>
+      </button>
+      <div
+        className={`w-1/4 navbar-bg h-full ${
+          isNavbarCollapsed ? "hidden" : ""
+        }`}
+      >
         <h1 className="text-3xl font-bold mb-4">Folder Upload</h1>
-
         <FolderInput onChange={handleInputChange} />
         {fileTree && (
           <div className="overflow-y-auto max-h-[400px]">
