@@ -2,6 +2,10 @@ from vector_database.folderParser import FolderParser
 from vector_database.vectorDatabase import VectorDatabase
 import pdb
 
+"""
+This code is used to index incoming code to the database to be searched.
+"""
+
 if __name__ == "__main__":
     folder_path = input("Full path to folder containing code: ")
 

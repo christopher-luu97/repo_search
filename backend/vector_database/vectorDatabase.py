@@ -1,4 +1,5 @@
 import marqo
+import os
 import json
 from typing import Any, Dict, List, Optional, Union
 
@@ -29,7 +30,7 @@ class VectorDatabase:
         self.index_name = index_name
 
     @staticmethod
-    def get_index_settings(filepath: Optional[str] = "./index_settings.json") -> Dict:
+    def get_index_settings(filepath: Optional[str] = "index_settings.json") -> Dict:
         """
         Get the index settings for Marqo, defined in a separate JSON file
 
@@ -39,7 +40,9 @@ class VectorDatabase:
         Returns:
             Dict: _description_
         """
-        with open(filepath) as f:
+        # TODO fix hardcoded vector_database
+        full_path = os.path.join(os.getcwd(), "vector_database", filepath)
+        with open(full_path) as f:
             index_settings = json.load(f)
         return index_settings
 
