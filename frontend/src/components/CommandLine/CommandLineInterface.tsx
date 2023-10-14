@@ -1,79 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, FormEvent, KeyboardEvent } from 'react';
 
 interface CommandLineInterfaceProps {
-  onSubmit: (command: string) => void;
+  onSubmit: (query: string) => Promise<string>;
 }
 
-export function CommandLineInterface({ onSubmit }: CommandLineInterfaceProps) {
-  const [commandLineInput, setCommandLineInput] = useState<string>("");
-  const [apiResponse, setApiResponse] = useState<string | null>(null);
+export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSubmit }) => {
+  const [lines, setLines] = useState<string[]>([]);
+  const [query, setQuery] = useState<string>('');
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const responseContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCommandLineInput(e.target.value);
-  };
-
-  const handleSubmit = async () => {
-    try {
-      // Send a POST request to your API
-      const response = await fetch("http://localhost:8881/api/endpoint", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Set the appropriate content type
-        },
-        body: JSON.stringify({ command: commandLineInput }), // Send the input data as JSON
-      });
-
-      if (response.ok) {
-        // If the response is successful (HTTP status code 200), parse and handle the response data
-        const responseData = await response.json();
-        // Set the API response in state
-        setApiResponse(JSON.stringify(responseData));
-      } else {
-        // Handle error responses here (e.g., set an error message)
-        setApiResponse("Error: " + response.statusText);
-      }
-    } catch (error) {
-      // Handle network or fetch-related errors here (e.g., set an error message)
-      if (error instanceof Error) {
-        setApiResponse("Fetch error: " + error.message);
-      } else {
-        setApiResponse("Unknown error occurred.");
-      }
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
 
-    // Call the onSubmit function with the entered command
-    onSubmit(commandLineInput);
+    if (responseContainerRef.current) {
+      responseContainerRef.current.scrollTop = responseContainerRef.current.scrollHeight;
+    }
+  }, [query, lines]);
 
-    // Clear the input field
-    setCommandLineInput("");
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as unknown as FormEvent);
+    }
   };
 
-  const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      // Prevent the default Enter key behavior (e.g., submitting forms)
-      e.preventDefault();
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted with query:', query);
 
-      // Call the submit function when Enter key is pressed
-      handleSubmit();
+    setLines((prev) => [...prev, `> ${query}`]);
+    setQuery('');
+
+    try {
+      const response = await onSubmit(query);
+      console.log('Response received:', response);
+      setLines((prev) => [...prev, response]);
+    } catch (error) {
+      console.log('Error:', error);
+      setLines((prev) => [...prev, 'Error: Failed to fetch response']);
     }
   };
 
   return (
-    <div className="mt-2">
-      <p>Command Line Interface:</p>
-      <div className="flex">
-        <input
-          type="text"
-          className="flex-grow bg-transparent border-b border-white text-white focus:outline-none"
-          placeholder="Enter a command..."
-          value={commandLineInput}
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeyPress}
-        />
-        {apiResponse !== null && (
-          <div className="text-white mt-2">{apiResponse}</div>
-        )}
+    <div className="bg-black text-white p-4 w-full h-full rounded">
+      <div 
+        ref={responseContainerRef}
+        className="overflow-auto w-full max-h-60 mb-4 break-words"
+      >
+        {lines.map((line, index) => (
+          <div key={index}>{line}</div>
+        ))}
       </div>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          ref={textareaRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyPress={handleKeyPress}
+          className="bg-black text-white outline-none border-b border-gray-600 w-full"
+          style={{ resize: 'none', overflow: 'hidden' }}
+        />
+      </form>
     </div>
   );
-}
+};

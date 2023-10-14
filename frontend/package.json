@@ -10,6 +10,7 @@
     "@types/node": "^16.18.48",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "re-resizable": "^6.9.11",
     "react": "^18.2.0",
     "react-complex-tree": "^2.2.2",
     "react-dom": "^18.2.0",

@@ -1,116 +1,47 @@
-import { FolderInput } from "./FolderInput";
-import { TreeFileComponent } from "./TreeFileComponent";
-import { TreeFileComponentProps } from "./TreeFileComponent";
-import { useState } from "react";
-import { convertListFileToObjectParentTree, readTemplate } from "../../utils";
-import { CommandLineInterface } from "../CommandLine/CommandLineInterface";
+import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
 
-type MappedFiles = {
-  [key: string]: File;
-};
+interface Repository {
+  id: number;
+  name: string;
+}
 
-export function Explorer() {
-  const [root, setRoot] = useState("");
-  const [fileTree, setFileTree] = useState<
-    TreeFileComponentProps["data"] | null
-  >(null);
-  const [mappedFileItems, setMappedFileItems] = useState<MappedFiles>({});
-  const [currentSelectFile, setCurrentSelectFile] = useState<
-    string | null | undefined
-  >(null);
-  const [isNavbarCollapsed, setIsNavBarCollapsed] = useState<boolean>(false);
-  const [height, setHeight] = useState(450); // Initial width of main-content
+export const Explorer: React.FC = () => {
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
-  const handleInputChange = (files: FileList | null) => {
-    if (files) {
-      const tempedMappedFiles: MappedFiles = {};
+  useEffect(() => {
+    // // Replace with the actual API endpoint
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get<Repository[]>('https://api.example.com/repositories');
+    //     setRepositories(response.data);
+    //   } catch (error) {
+    //     console.error('There was an error fetching the data!', error);
+    //   }
+    // };
 
-      // Convert the FileList to an array
-      const mappedFiles = Array.from(files);
+    // fetchData();
+        // Example data
+    const exampleData: Repository[] = [
+      { id: 1, name: 'Repo 1' },
+      { id: 2, name: 'Repo 2' },
+      { id: 3, name: 'Repo 3' },
+      // ... Add more if needed
+    ];
 
-      mappedFiles.forEach((item: File) => {
-        tempedMappedFiles[item.webkitRelativePath] = item;
-      });
-
-      const template = convertListFileToObjectParentTree(mappedFiles);
-      setRoot(Object.keys(template)[0]);
-      const value = readTemplate(template, {});
-
-      setFileTree(value);
-      setMappedFileItems(tempedMappedFiles);
-    }
-  };
-
-  const toggleNavbar = () => {
-    setIsNavBarCollapsed(!isNavbarCollapsed);
-  };
-
-  const handleCommandLineSubmit = (command: string) => {
-    // Process the command here
-    // For this example, I'm just logging it
-    console.log(`Received command: ${command}`);
-  };
-
-  // For debugging, import useEffect as well
-  // useEffect(() => {
-  //   // This effect will run whenever fileTree or mappedFileItems change
-  //   console.log("File Tree updated: ", fileTree);
-  //   console.log("Mapped File Items updated: ", mappedFileItems);
-  // }, [fileTree, mappedFileItems]);
+    setRepositories(exampleData);
+  }, []);
 
   return (
-    <div className="flex flex-grow">
-      <button
-        onClick={toggleNavbar}
-        className={`text-white p-2 rounded-lg bg-blue-500 hover:bg-blue-600 z-10 ${
-          isNavbarCollapsed ? "w-6" : "w-6" // Adjust the width here
-        }`}
-      >
-        <p className="flex justify-center align-middle">{">>"}</p>
-      </button>
-      <div
-        className={`w-1/4 navbar-bg h-full ${
-          isNavbarCollapsed ? "hidden" : ""
-        }`}
-      >
-        <h1 className="text-3xl font-bold mb-4">Folder Upload</h1>
-        <FolderInput onChange={handleInputChange} />
-        {fileTree && (
-          <div className="overflow-y-auto max-h-[400px]">
-            <TreeFileComponent
-              data={fileTree}
-              root={root}
-              onSelectItems={(items, treeId) => {
-                let fullPath = null;
-                // Set the full path of the item to be rendered if it exists
-                Object.keys(mappedFileItems).forEach((key) => {
-                  if (key.endsWith(items.join("/"))) {
-                    fullPath = key;
-                  }
-                });
-                if (fullPath) {
-                  const file = mappedFileItems[fullPath]; //mappedFileItems[items[0]];
-                  setCurrentSelectFile(URL.createObjectURL(file));
-                } else {
-                  setCurrentSelectFile(null);
-                }
-              }}
-            />
-          </div>
-        )}
-      </div>
-      <div
-        className="main-content-bg w-full"
-        style={{
-          height: `${height}px`,
-          border: "1px solid red", // Adjust the border style as needed
-        }}
-      >
-        {currentSelectFile && (
-          <embed className="w-full h-full" src={currentSelectFile} />
-        )}
-        <CommandLineInterface onSubmit={handleCommandLineSubmit} />
-      </div>
+    <div className="bg-gray-800 text-white w-full h-full p-4">
+      <h2 className="text-xl mb-4">Repositories</h2>
+      <ul>
+        {repositories.map((repo) => (
+          <li key={repo.id} className="mb-2">
+            {repo.name}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};

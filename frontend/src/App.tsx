@@ -1,13 +1,13 @@
 import "./App.css";
 import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
-import { Explorer } from "./components/Explorer/Explorer";
+import { Main} from "./components/Main/Main";
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col">
       <Header />
-      <Explorer />
+      <Main />
       <Footer />
     </div>
   );
