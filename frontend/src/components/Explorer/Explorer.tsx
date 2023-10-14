@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
+import { SearchBar } from './SearchBar';
 
 interface Repository {
   id: number;
@@ -32,9 +33,15 @@ export const Explorer: React.FC = () => {
     setRepositories(exampleData);
   }, []);
 
+  const handleSearchResults = (results: any) => {
+    // Process and display the search results as needed
+    console.log('Search results:', results);
+  };
+
   return (
     <div className="bg-gray-800 text-white w-full h-full p-4">
       <h2 className="text-xl mb-4">Repositories</h2>
+      <SearchBar onSearch={handleSearchResults} />
       <ul>
         {repositories.map((repo) => (
           <li key={repo.id} className="mb-2">
