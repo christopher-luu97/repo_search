@@ -30,7 +30,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="mb-4">
+    <form onSubmit={handleSearch} className="mb-4 pt-4">
         <input 
             type="text" 
             value={query} 
