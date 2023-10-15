@@ -8,3 +8,5 @@ utilities.py
 node_modules/
 __pycache__/
 *.pyc
+/backend/file_path_settings.json
+/frontend/src/components/Main/config.ts

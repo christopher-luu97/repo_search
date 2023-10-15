@@ -1,54 +1,32 @@
-import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import React, { useState } from 'react';
 import { SearchBar } from './SearchBar';
 
-interface Repository {
-  id: number;
-  name: string;
+interface ExplorerProps {
+  onSelect: (filepath: string) => void;
 }
 
-export const Explorer: React.FC = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  useEffect(() => {
-    // // Replace with the actual API endpoint
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await axios.get<Repository[]>('https://api.example.com/repositories');
-    //     setRepositories(response.data);
-    //   } catch (error) {
-    //     console.error('There was an error fetching the data!', error);
-    //   }
-    // };
-
-    // fetchData();
-        // Example data
-    const exampleData: Repository[] = [
-      { id: 1, name: 'Repo 1' },
-      { id: 2, name: 'Repo 2' },
-      { id: 3, name: 'Repo 3' },
-      // ... Add more if needed
-    ];
-
-    setRepositories(exampleData);
-  }, []);
-
-  const handleSearchResults = (results: any) => {
-    // Process and display the search results as needed
-    console.log('Search results:', results);
+  const handleSearch = (results: any[]) => {
+    setSearchResults(results);
   };
 
   return (
-    <div className="bg-gray-800 text-white w-full h-full p-4">
-      <h2 className="text-xl mb-4">Repositories</h2>
-      <SearchBar onSearch={handleSearchResults} />
-      <ul>
-        {repositories.map((repo) => (
-          <li key={repo.id} className="mb-2">
-            {repo.name}
-          </li>
+    <div>
+      <SearchBar onSearch={handleSearch} />
+      <div className="grid grid-cols-1 gap-4">
+        {searchResults.map((result, index) => (
+          <div 
+            key={index} 
+            className="p-4 border rounded overflow-hidden cursor-pointer" 
+            onClick={() => onSelect(result.filepath)}
+          >
+            <div className="font-bold">{result.node_type}</div>
+            <div className="text-sm overflow-ellipsis overflow-hidden">{result.code}</div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

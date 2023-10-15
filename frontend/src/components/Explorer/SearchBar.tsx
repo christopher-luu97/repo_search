@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from 'react';
+import axios from 'axios';
 
 interface SearchBarProps {
   onSearch: (results: any) => void; // Replace 'any' with the actual type of your search results
@@ -7,19 +8,25 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState<string>('');
 
-  // TODO: Replace search with API endpoint
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      // Mock API request with setTimeout
-      setTimeout(() => {
-        console.log('Search query submitted:', query);
-        onSearch('SUCCESS');
-      }, 1000);  // Adjust the delay as needed
-    } catch (error) {
-      console.error('There was an error with the search!', error);
+      const response = await axios.post(
+        'http://127.0.0.1:8000/search',
+        { query },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      console.log('Search results:', response.data);
+    if (response.data && Array.isArray(response.data.results)) {
+      onSearch(response.data.results);  // Pass results to the parent component
+    } else {
+      console.error('Results is not an array or undefined');
     }
+  } catch (error) {
+    console.error('There was an error with the search!', error);
+  }
   };
 
   return (
@@ -29,7 +36,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             value={query} 
             onChange={(e) => setQuery(e.target.value)} 
             placeholder="Search repositories..." 
-            className="p-2 border rounded text-black"
+            className="p-2 border rounded text-black w-full"
         />
     </form>
   );
