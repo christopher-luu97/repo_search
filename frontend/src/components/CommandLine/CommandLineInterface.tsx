@@ -37,14 +37,28 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
     setQuery('');
 
     try {
-      const response = await onSubmit(query);
-      console.log('Response received:', response);
-      setLines((prev) => [...prev, response]);
+      // Make a request to backend endpoint
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question: query })  // Send the query to the backend
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();  // Receive response from the backend
+      console.log('Response received:', data.answer);
+      setLines((prev) => [...prev, data.answer]);  // Display answer on the UI
     } catch (error) {
       console.log('Error:', error);
       setLines((prev) => [...prev, 'Error: Failed to fetch response']);
     }
   };
+
 
   return (
     <div className="bg-black text-white p-4 w-full h-full rounded">

@@ -35,8 +35,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             type="text" 
             value={query} 
             onChange={(e) => setQuery(e.target.value)} 
-            placeholder="Search repositories..." 
-            className="p-2 border rounded text-black w-full"
+            placeholder="Search your repositories..." 
+            className="p-2 border rounded text-white w-full"
+            style={{ backgroundColor: '#020408' }}
         />
     </form>
   );
