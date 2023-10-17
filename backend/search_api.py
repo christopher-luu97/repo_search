@@ -68,27 +68,3 @@ async def read_file(file_path: str):
         return FileResponse(str(file_location))
     else:
         raise HTTPException(status_code=404, detail="File not found")
-
-
-# OPENAPI stuff for gpt
-# Read the file path from the JSON file
-with open("oai_credentials.json", "r") as file:
-    settings = json.load(file)
-    OPENAI_API_KEY = settings.get("API_KEY")
-
-
-@app.post("/ask")
-async def ask_gpt3(question: str):
-    if not OPENAI_API_KEY:
-        raise HTTPException(status_code=500, detail="OpenAI API Key not set")
-
-    openai.api_key = OPENAI_API_KEY
-
-    try:
-        response = openai.Completion.create(
-            engine="text-davinci-002", prompt=question, max_tokens=150
-        )
-        answer = response.choices[0].text.strip()
-        return {"answer": answer}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))

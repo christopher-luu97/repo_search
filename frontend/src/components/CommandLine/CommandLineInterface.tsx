@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, FormEvent, KeyboardEvent } from 'react';
+import axios from 'axios';
 
 interface CommandLineInterfaceProps {
   onSubmit: (query: string) => Promise<string>;
@@ -38,26 +39,27 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
 
     try {
       // Make a request to backend endpoint
-      const response = await fetch('/ask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ question: query })  // Send the query to the backend
-      });
+      const response = await axios.post(
+        'http:/localhost:5001/api/v1/generate',
+        { prompt: query }, 
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
-      if (!response.ok) {
+      console.log('Search results:', response.data);
+
+      if (response.status !== 200) {  // <--- modified this line to correctly check the status code
         throw new Error('Network response was not ok ' + response.statusText);
       }
 
-      const data = await response.json();  // Receive response from the backend
-      console.log('Response received:', data.answer);
-      setLines((prev) => [...prev, data.answer]);  // Display answer on the UI
+      // Since axios automatically parses JSON, we don't need to call `.json()`
+      const text = response.data.results[0].text;  
+      console.log('Response received:', text);
+      setLines((prev) => [...prev, text]);  // Display answer on the UI
     } catch (error) {
       console.log('Error:', error);
       setLines((prev) => [...prev, 'Error: Failed to fetch response']);
     }
-  };
+};
 
 
   return (
