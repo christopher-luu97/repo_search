@@ -63,7 +63,7 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
 
 
     return (  
-  <div className="bg-black text-white p-4 w-full h-full rounded overflow-auto max-h-screen"> 
+  <div className="text-white p-4 w-full h-full rounded overflow-auto max-h-screen" style={{background:"#161B22"}}> 
       <div 
         ref={responseContainerRef}
         className="w-full mb-4 break-words"
@@ -92,7 +92,7 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyPress}
             className="bg-black text-white outline-none w-full"
-            style={{ resize: 'none', overflow: 'hidden' }}
+            style={{ resize: 'none', overflow: 'hidden', background:"#161B22"}}
             disabled={loading}  // Disable textarea when loading
           />
         </form>
