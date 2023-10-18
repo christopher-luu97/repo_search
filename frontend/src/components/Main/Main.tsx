@@ -34,15 +34,15 @@ export const Main: React.FC = () => {
           
 
         return (
-            <div className="grid gap-4 h-screen" style={{ gridTemplateColumns: '1fr 4fr', backgroundColor: '#020408'}}>
-                <div style={{ backgroundColor: '#0D1116' }} className="overflow-auto">
+            <div className="grid gap-4 h-screen flex-1 overflow-auto" style={{ gridTemplateColumns: '1fr 4fr'}}>
+                <div style={{ backgroundColor: '#0D1116' }} className="overflow-auto border">
                     <Explorer onSelect={handleSelect} />
                 </div>
                 <div className="flex flex-col h-full">
-                    <div className="bg-gray-300 overflow-auto mb-4 flex-grow">
+                    <div className="bg-gray-300 overflow-auto mb-4 flex-grow border rounded-md">
                         {selectedFile && <embed src={selectedFile} className="w-full h-full" />}
                     </div>
-                    <div className="bg-gray-400 overflow-auto h-1/3">
+                    <div className="bg-gray-400 flex-none border rounded-md" style={{ height: '33.3%' }}> 
                         <CommandLineInterface onSubmit={mockApi} />
                     </div>
                 </div>

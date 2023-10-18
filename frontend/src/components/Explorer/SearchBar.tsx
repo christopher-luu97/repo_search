@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 
 interface SearchBarProps {
-  onSearch: (results: any) => void; // Replace 'any' with the actual type of your search results
+  onSearch: (results: any) => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {

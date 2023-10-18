@@ -34,14 +34,15 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
     e.preventDefault();
     console.log('Form submitted with query:', query);
 
-    setLines((prev) => [...prev, `> ${query}`]);
+    setLines((prev) => [...prev, `(User) %  ${query}`]);
     setQuery('');
 
     try {
       // Make a request to backend endpoint
       const response = await axios.post(
-        'http:/localhost:5001/api/v1/generate',
-        { prompt: query }, 
+        'http://localhost/api/v1/generate',
+        { prompt: query,
+          max_length : 512 }, 
         { headers: { 'Content-Type': 'application/json' } }
       );
 
@@ -51,10 +52,9 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
         throw new Error('Network response was not ok ' + response.statusText);
       }
 
-      // Since axios automatically parses JSON, we don't need to call `.json()`
       const text = response.data.results[0].text;  
       console.log('Response received:', text);
-      setLines((prev) => [...prev, text]);  // Display answer on the UI
+      setLines((prev) => [...prev, `(Response) % ${text}`]);  // Modified this line
     } catch (error) {
       console.log('Error:', error);
       setLines((prev) => [...prev, 'Error: Failed to fetch response']);
@@ -62,26 +62,30 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
 };
 
 
-  return (
-    <div className="bg-black text-white p-4 w-full h-full rounded">
-      <div 
-        ref={responseContainerRef}
-        className="overflow-auto w-full max-h-60 mb-4 break-words"
-      >
-        {lines.map((line, index) => (
-          <div key={index}>{line}</div>
-        ))}
+    return (
+      <div className="bg-black text-white p-4 w-full h-full rounded overflow-auto max-h-screen"> 
+        <div 
+          ref={responseContainerRef}
+          className="w-full mb-4 break-words"
+          style={{ whiteSpace: 'pre-wrap' }}
+        >
+          {lines.map((line, index) => (
+            <div key={index}>{line}</div>
+          ))}
+        </div>
+        <div className="relative">
+          <div className="absolute top-0 left-0 p-1 text-gray-400">(User) %</div>
+          <form onSubmit={handleSubmit} className="pl-20"> 
+            <textarea
+              ref={textareaRef}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyPress}
+              className="bg-black text-white outline-none border-b border-gray-600 w-full"
+              style={{ resize: 'none', overflow: 'hidden' }}
+            />
+          </form>
+        </div>
       </div>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          ref={textareaRef}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyPress={handleKeyPress}
-          className="bg-black text-white outline-none border-b border-gray-600 w-full"
-          style={{ resize: 'none', overflow: 'hidden' }}
-        />
-      </form>
-    </div>
-  );
+    );
 };

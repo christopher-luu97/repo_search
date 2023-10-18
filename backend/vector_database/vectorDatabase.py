@@ -102,6 +102,7 @@ class VectorDatabase:
         results_list = []
         for item in results["hits"]:
             if item["node_type"] != "import_from_statement":
-                print(json.dumps(item, indent=4))
-                results_list.append(item)
+                if item["node_type"] != "import_statement":
+                    print(json.dumps(item, indent=4))
+                    results_list.append(item)
         return results_list

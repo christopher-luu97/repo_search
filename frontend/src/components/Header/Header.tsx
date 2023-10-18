@@ -1,6 +1,6 @@
 export function Header() {
   return (
-    <nav className="bg-gray-800 p-4">
+    <nav className="p-4">
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           <header className="text-white font-bold text-xl">

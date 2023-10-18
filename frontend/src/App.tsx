@@ -5,9 +5,9 @@ import { Main} from "./components/Main/Main";
 
 function App() {
   return (
-    <div className="flex flex-col h-screen bg-gray-800">
+    <div className="flex flex-col h-screen bg-gray-800" style={{ backgroundColor: '#020408'}}>
       <Header />
-      <Main  />
+      <Main />
       <Footer />
     </div>
   );
