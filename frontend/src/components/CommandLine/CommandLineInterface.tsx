@@ -10,6 +10,7 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
   const [query, setQuery] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const responseContainerRef = useRef<HTMLDivElement | null>(null);
+  const [loading, setLoading] = useState(false);  // Add this line for the loading state
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -32,6 +33,7 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when the form is submitted
     console.log('Form submitted with query:', query);
 
     setLines((prev) => [...prev, `(User) %  ${query}`]);
@@ -40,52 +42,61 @@ export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSu
     try {
       // Make a request to backend endpoint
       const response = await axios.post(
-        'http://localhost/api/v1/generate',
+        'http://localhost:5001/api/v1/generate',
         { prompt: query,
           max_length : 512 }, 
         { headers: { 'Content-Type': 'application/json' } }
       );
-
-      console.log('Search results:', response.data);
-
-      if (response.status !== 200) {  // <--- modified this line to correctly check the status code
+      setLoading(false)
+      if (response.status !== 200) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
 
       const text = response.data.results[0].text;  
-      console.log('Response received:', text);
-      setLines((prev) => [...prev, `(Response) % ${text}`]);  // Modified this line
+      setLines((prev) => [...prev, `(Response) % ${text}`]);
     } catch (error) {
       console.log('Error:', error);
       setLines((prev) => [...prev, 'Error: Failed to fetch response']);
+      setLoading(false); // Set loading to false in case of error
     }
 };
 
 
-    return (
-      <div className="bg-black text-white p-4 w-full h-full rounded overflow-auto max-h-screen"> 
-        <div 
-          ref={responseContainerRef}
-          className="w-full mb-4 break-words"
-          style={{ whiteSpace: 'pre-wrap' }}
-        >
-          {lines.map((line, index) => (
-            <div key={index}>{line}</div>
-          ))}
-        </div>
-        <div className="relative">
-          <div className="absolute top-0 left-0 p-1 text-gray-400">(User) %</div>
-          <form onSubmit={handleSubmit} className="pl-20"> 
-            <textarea
-              ref={textareaRef}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className="bg-black text-white outline-none border-b border-gray-600 w-full"
-              style={{ resize: 'none', overflow: 'hidden' }}
-            />
-          </form>
-        </div>
+    return (  
+  <div className="bg-black text-white p-4 w-full h-full rounded overflow-auto max-h-screen"> 
+      <div 
+        ref={responseContainerRef}
+        className="w-full mb-4 break-words"
+        style={{ whiteSpace: 'pre-wrap' }}
+      >
+        {lines.map((line, index) => (
+          <div key={index}>{line}</div>
+        ))}
       </div>
-    );
-};
+
+      <div className="relative">
+        {!loading && (  // Conditionally render (User) % based on the loading state
+          <div className="absolute top-0 left-0 p-1 text-gray-400" style={{ paddingTop: '0px' }}>(User) %</div>
+        )}
+
+        <form onSubmit={handleSubmit} className="pl-20 relative"> 
+          {loading && (  // Conditionally render the loading bar within the form
+            <div className="absolute top-0 left-0 w-full h-1 z-50">
+              <div className="w-full h-3 bg-blue-500 animate-pulse rounded-lg"></div>
+            </div>
+          )}
+
+          <textarea
+            ref={textareaRef}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyPress}
+            className="bg-black text-white outline-none w-full"
+            style={{ resize: 'none', overflow: 'hidden' }}
+            disabled={loading}  // Disable textarea when loading
+          />
+        </form>
+      </div>
+    </div>
+);
+        }
