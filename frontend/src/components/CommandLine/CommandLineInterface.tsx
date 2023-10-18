@@ -1,11 +1,7 @@
 import React, { useState, useRef, useEffect, FormEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
 
-interface CommandLineInterfaceProps {
-  onSubmit: (query: string) => Promise<string>;
-}
-
-export const CommandLineInterface: React.FC<CommandLineInterfaceProps> = ({ onSubmit }) => {
+export const CommandLineInterface: React.FC = () => {
   const [lines, setLines] = useState<string[]>([]);
   const [query, setQuery] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
