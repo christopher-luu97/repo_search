@@ -25,12 +25,12 @@ export const Main: React.FC = () => {
     };
 
     return (
-        <div className="grid gap-4 h-screen flex-1 overflow-auto px-4" style={{ gridTemplateColumns: '1fr 4fr' }}>
-            <div style={{ backgroundColor: '#0D1116' }} className="overflow-auto border">
+        <div className="grid gap-4 h-screen flex-1 overflow-auto px-4" style={{ backgroundColor: "#0D1116", gridTemplateColumns: "1fr 4fr" }}>
+            <div className="border overflow-auto">
                 <Explorer onSelect={handleSelect} />
             </div>
-            <div className="flex flex-col h-full">
-                <div className="bg-gray-300 max-h-[500px] overflow-auto mb-4 flex-grow border rounded-md">
+            <div className="flex flex-col h-full overflow-hidden">
+                <div className="bg-gray-300 overflow-auto mb-4 flex-grow border rounded-md" style={{ maxHeight: "500px" }}>
                     {fileContent && (
                             <CodeMirror
                             value={fileContent}
@@ -41,7 +41,7 @@ export const Main: React.FC = () => {
                         />
                     )}
                 </div>
-                <div className="bg-gray-400 flex-none border rounded-md" style={{ height: '33.3%' }}>
+                <div className="bg-gray-400 flex-none border rounded-md overflow-hidden h-1/3">
                     <CommandLineInterface />
                 </div>
             </div>

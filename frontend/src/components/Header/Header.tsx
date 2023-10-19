@@ -1,29 +1,11 @@
 export function Header() {
   return (
-    <nav className="p-4">
+    <nav className="p-4 bg-gradient animate-gradient-x">
       <div className="container mx-auto">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center"> 
           <header className="text-white font-bold text-xl">
-            Repo Search and QNA
+            Smart Code Search
           </header>
-          <ul className="flex space-x-4">
-            <li>
-              <a
-                href="https://github.com/"
-                className="text-white hover:text-gray-300"
-              >
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/"
-                className="text-white hover:text-gray-300"
-              >
-                Social
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </nav>

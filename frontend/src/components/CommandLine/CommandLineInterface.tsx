@@ -59,11 +59,10 @@ export const CommandLineInterface: React.FC = () => {
 
 
     return (  
-  <div className="text-white p-4 w-full h-full rounded overflow-auto max-h-screen" style={{background:"#161B22"}}> 
+  <div className="text-white p-4 rounded h-96 overflow-auto" style={{backgroundColor:"#161B22"}}> 
       <div 
         ref={responseContainerRef}
-        className="w-full mb-4 break-words"
-        style={{ whiteSpace: 'pre-wrap' }}
+        className="w-full mb-4 break-words whitespace-pre-wrap"
       >
         {lines.map((line, index) => (
           <div key={index}>{line}</div>
@@ -71,12 +70,12 @@ export const CommandLineInterface: React.FC = () => {
       </div>
 
       <div className="relative">
-        {!loading && (  // Conditionally render (User) % based on the loading state
-          <div className="absolute top-0 left-0 p-1 text-gray-400" style={{ paddingTop: '0px' }}>(User) %</div>
+        {!loading && (
+          <div className="absolute top-0 left-0 p-1 text-gray-400" style={{ top: '-5px' }}>(User) %</div>
         )}
 
         <form onSubmit={handleSubmit} className="pl-20 relative"> 
-          {loading && (  // Conditionally render the loading bar within the form
+          {loading && (
             <div className="absolute top-0 left-0 w-full h-1 z-50">
               <div className="w-full h-3 bg-blue-500 animate-pulse rounded-lg"></div>
             </div>
@@ -87,12 +86,12 @@ export const CommandLineInterface: React.FC = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyPress}
-            className="bg-black text-white outline-none w-full"
-            style={{ resize: 'none', overflow: 'hidden', background:"#161B22"}}
-            disabled={loading}  // Disable textarea when loading
+            className="text-white outline-none w-full resize-none overflow-hidden disabled:bg-gray-500"
+            style={{ maxHeight: '150px',backgroundColor:"#161B22"}}
+            disabled={loading}
           />
         </form>
       </div>
     </div>
-);
-        }
+  );
+};
