@@ -25,7 +25,7 @@ export const Main: React.FC = () => {
     };
 
     return (
-        <div className="grid gap-4 h-screen flex-1 overflow-auto" style={{ gridTemplateColumns: '1fr 4fr' }}>
+        <div className="grid gap-4 h-screen flex-1 overflow-auto px-4" style={{ gridTemplateColumns: '1fr 4fr' }}>
             <div style={{ backgroundColor: '#0D1116' }} className="overflow-auto border">
                 <Explorer onSelect={handleSelect} />
             </div>
