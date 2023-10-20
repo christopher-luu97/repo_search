@@ -6,7 +6,7 @@ export const CommandLineInterface: React.FC = () => {
   const [query, setQuery] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const responseContainerRef = useRef<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState(false);  // Add this line for the loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -59,7 +59,7 @@ export const CommandLineInterface: React.FC = () => {
 
 
     return (  
-  <div className="text-white p-4 rounded h-96 overflow-auto" style={{backgroundColor:"#161B22"}}> 
+  <div className="text-white p-4 w-full h-full rounded overflow-auto" style={{backgroundColor:"#161B22"}}> 
       <div 
         ref={responseContainerRef}
         className="w-full mb-4 break-words whitespace-pre-wrap"

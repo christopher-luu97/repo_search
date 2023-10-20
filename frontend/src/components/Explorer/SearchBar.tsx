@@ -18,7 +18,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         { headers: { 'Content-Type': 'application/json' } }
       );
 
-      console.log('Search results:', response.data);
     if (response.data && Array.isArray(response.data.results)) {
       onSearch(response.data.results);  // Pass results to the parent component
     } else {
