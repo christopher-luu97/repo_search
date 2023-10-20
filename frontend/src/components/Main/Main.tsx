@@ -12,7 +12,7 @@ import { openSearchPanel } from "@codemirror/search";
 
 export const Main: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    const [fileContent, setFileContent] = useState<string | null>("");
+    const [fileContent, setFileContent] = useState<string | null>("// Selected search results files are presented here");
     const [searchKeyword, setSearchKeyword] = useState<string | null>(null);
     const codeMirrorRef = useRef<any>(null);
 
@@ -54,7 +54,6 @@ export const Main: React.FC = () => {
                 const changeEvent = new Event('change', { bubbles: true });
                 searchField.dispatchEvent(changeEvent);
     
-                console.log('Submitting the search');
                 const enterEvent = new KeyboardEvent('keydown', { 
                     bubbles: true, 
                     cancelable: true, 
@@ -68,17 +67,13 @@ export const Main: React.FC = () => {
         }
     }, [selectedFile, fileContent, searchKeyword]); // Dependencies
     
-    
-    
-    
-    
     return (
         <div className="grid gap-4 h-screen flex-1 overflow-auto px-4" style={{ backgroundColor: "#0D1116", gridTemplateColumns: "1fr 4fr" }}>
         <div className="border overflow-auto">
             <Explorer onSelect={handleSelect} />
         </div>
         <div className="flex flex-col h-full overflow-hidden">
-            <div className="bg-gray-300 overflow-auto mb-4 flex-grow border rounded-md" style={{ maxHeight: "500px" }}>
+            <div className="overflow-auto mb-4 flex-grow border rounded-md" style={{ maxHeight: "500px", backgroundColor: "#2B313D"}}>
                 {fileContent && (
                     <CodeMirror
                         value={fileContent}
