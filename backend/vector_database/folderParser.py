@@ -112,6 +112,7 @@ class FolderParser:
         """
         code_files = self._get_code_files()
 
+        # Identify all functions in a file, process them and remove import statements from being list to be indexed
         all_nodes = []
         for code_file in code_files:
             nodes = list(self._get_functions(code_file))
@@ -119,7 +120,13 @@ class FolderParser:
                 all_nodes.append(func)
         all_nodes = self._process_nodes(all_nodes)
         print("Total number of functions extracted: ", len(all_nodes))
-        return all_nodes
+
+        filtered_data = [
+            item
+            for item in all_nodes
+            if item["node_type"] not in ["import_statement", "import_from_statement"]
+        ]
+        return filtered_data
 
     def _process_nodes(self, all_nodes: list):
         """

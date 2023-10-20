@@ -21,7 +21,7 @@ class VectorDatabase:
         """
         self.client = marqo.Client(url=endpoint)
 
-    def get_index(self, index_name: Optional[str] = "my-first-index"):
+    def get_index(self, index_name: Optional[str] = "repo-index"):
         """_summary_
 
         Args:
@@ -101,8 +101,6 @@ class VectorDatabase:
         results = mq.index(index_name).search(q)
         results_list = []
         for item in results["hits"]:
-            if item["node_type"] != "import_from_statement":
-                if item["node_type"] != "import_statement":
-                    print(json.dumps(item, indent=4))
-                    results_list.append(item)
+            print(json.dumps(item, indent=4))
+            results_list.append(item)
         return results_list
