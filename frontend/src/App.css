@@ -48,3 +48,22 @@
 .main-content-bg {
   background-color: #ccc; /* Gray color for the main content */
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #4e5660; /* Dark background color */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #43758a; /* Darker thumb color */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5189a7; /* Slightly lighter color on hover */
+}
+
