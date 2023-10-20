@@ -3,24 +3,24 @@
 import os
 import glob
 from tree_sitter import Language, Parser
-from typing import Optional
+from typing import Optional, List, Dict, Tuple, Generator, Union
 
 
 class FolderParser:
     """
     Class to parse folders containing Python code only
-
-    Yields:
-        _type_: _description_
     """
 
     def __init__(self, root_file_path):
-        self.current_language = self.get_language()  # Set default on init
-        self.code_root = self.get_code_root(root_file_path)
+        self.current_language: Tuple[Language, str] = self.get_language()
+        self.code_root: str = self.get_code_root(root_file_path)
 
-    def get_code_root(self, root_file_path: str):
+    def get_code_root(self, root_file_path: str) -> str:
         """
         User inputs the folder path that contains code they want to parse
+
+        Args:
+            root_file_path (str): Complete file path to the folder to parse
         """
         return root_file_path
 
@@ -29,7 +29,7 @@ class FolderParser:
         build_folder: Optional[str] = "build/my-languages.so",
         language: Optional[str] = "python",
         file_extension: Optional[str] = "*.py",
-    ):
+    ) -> Tuple[Language, str]:
         """
         Getter for the language builds, defaults all to Python specific
 
@@ -42,20 +42,26 @@ class FolderParser:
             LANGUAGE (tuple): Tuple containing a tree_sitter.Language object and a string for file extension
         """
         build_folder = os.path.join(os.getcwd(), "vector_database", build_folder)
-        LANGUAGE = (Language(build_folder, language), file_extension)
+        LANGUAGE: Tuple[Language, str] = (
+            Language(build_folder, language),
+            file_extension,
+        )
         return LANGUAGE
 
-    def _get_functions(self, filepath: str):
+    def _get_functions(self, filepath: str) -> Generator[Dict[str, str], None, None]:
         """
         Helper function to get all the functions in a file
 
         Args:
             filepath(str): Path to the code file
-        """
-        current_language = self.current_language
-        codestr = open(filepath).read().replace("\r", "\n")
 
-        parser = Parser()
+        Returns:
+            Generator[Dict[str,str], None, None]: Dictionary identifiying code, type and path
+        """
+        current_language: Tuple[Language, str] = self.current_language
+        codestr: str = open(filepath).read().replace("\r", "\n")
+
+        parser: Parser = Parser()
         parser.set_language(current_language[0])
 
         tree = parser.parse(bytes(codestr, "utf8"))
@@ -65,12 +71,16 @@ class FolderParser:
         while True:
             print("type: ", cursor.node.type)
             print(
-                "bye locations: ", cursor.node.start_byte, " - ", cursor.node.end_byte
+                "byte locations: ", cursor.node.start_byte, " - ", cursor.node.end_byte
             )
-            code = codestr[cursor.node.start_byte : cursor.node.end_byte]
-            node_type = cursor.node.type
+            code: str = codestr[cursor.node.start_byte : cursor.node.end_byte]
+            node_type: str = cursor.node.type
             print("code:\n", code)
-            code_filename = {"code": code, "node_type": node_type, "filepath": filepath}
+            code_filename: Dict[str, str] = {
+                "code": code,
+                "node_type": node_type,
+                "filepath": filepath,
+            }
             if code.strip() != "":
                 print("code_filename: ", code_filename)
                 yield code_filename
@@ -79,12 +89,12 @@ class FolderParser:
             if not has_sibling:
                 break
 
-    def _get_code_files(self) -> list:
+    def _get_code_files(self) -> List[str]:
         """
         Get all the code files to parse in an array
 
         Returns:
-            code_files (list): List of files
+            code_files (List[str]): List of files
 
         Example:
             For code_root == './search_app/transcription'
@@ -94,46 +104,48 @@ class FolderParser:
                 './search_app/transcription/transcribe.py',
                 './search_app/transcription/main.py']
         """
-        code_root = self.code_root
-        current_language = self.current_language
-        code_files = [
+        code_root: str = self.code_root
+        current_language: Tuple[Language, str] = self.current_language
+        code_files: List[str] = [
             y
             for x in os.walk(code_root)
             for y in glob.glob(os.path.join(x[0], current_language[1]))
         ]
         return code_files
 
-    def get_nodes(self) -> list:
+    def get_nodes(self) -> List[Dict[str, str]]:
         """
         Loop through each file from get_code_files() and parse them to identify the contents
 
         Returns:
-            all_nodes (list): Get all code, node_type and filepath for each line/functoin from code
+            all_nodes (List[Dict[str,str]]): Get all code, node_type and filepath for each line/functoin from code
         """
-        code_files = self._get_code_files()
+        code_files: List[str] = self._get_code_files()
 
-        # Identify all functions in a file, process them and remove import statements from being list to be indexed
-        all_nodes = []
+        all_nodes: List[Dict[str, str]] = []
         for code_file in code_files:
-            nodes = list(self._get_functions(code_file))
+            nodes: List[Dict[str, str]] = list(self._get_functions(code_file))
             for func in nodes:
                 all_nodes.append(func)
         all_nodes = self._process_nodes(all_nodes)
         print("Total number of functions extracted: ", len(all_nodes))
 
-        filtered_data = [
+        filtered_data: List[Dict[str, str]] = [
             item
             for item in all_nodes
             if item["node_type"] not in ["import_statement", "import_from_statement"]
         ]
         return filtered_data
 
-    def _process_nodes(self, all_nodes: list):
+    def _process_nodes(self, all_nodes: List[Dict[str, str]]) -> List[Dict[str, str]]:
         """
         Processing function to replace new lines with spaces instead
 
+        Args:
+            all_nodes (List[Dict[str,str]]): List of dictionaries containing code, node type and path
+
         Returns:
-            _type_: _description_
+            all_nodes (List[Dict[str,str]]): Processed input where newlines have been replaced
         """
         for item in all_nodes:
             item["code"] = item["code"].replace("\n", " ")

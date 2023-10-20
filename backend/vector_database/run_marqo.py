@@ -1,6 +1,5 @@
-from vector_database.folderParser import FolderParser
-from vector_database.vectorDatabase import VectorDatabase
-import pdb
+from .folderParser import FolderParser
+from .vectorDatabase import VectorDatabase
 
 """
 This code is used to index incoming code to the database to be searched.
@@ -22,5 +21,3 @@ if __name__ == "__main__":
     vector_database.add_documents(file_nodes, tensor_fields)
 
     response = vector_database.query(query)
-
-    pdb.set_trace()
