@@ -91,23 +91,24 @@ class VectorDatabase:
         print("\nDocuments successfully added!")
         return response
 
-    def query(self, q: str) -> list:
+    def query(self, q: str, skip: int = 0, limit: int = 20) -> list:
         """
         Given an input query, return the search response from Marqo as a list of results
 
         Args:
             q (str): Input query
+            skip (int): The number of results to skip (for pagination)
+            limit (int): The max number of documents to be returned
 
         Returns:
             results_list (list): List of hits from Marqo
         """
         index_name = self.index_name
         mq = self.client
-        results = mq.index(index_name).search(q)
-        results_list = []
-        for item in results["hits"]:
-            print(json.dumps(item, indent=4))
-            results_list.append(item)
+        results = mq.index(index_name).search(
+            q, offset=skip, limit=limit
+        )  # Include skip and limit in the Marqo search request
+        results_list = results["hits"]
         return results_list
 
     @staticmethod
