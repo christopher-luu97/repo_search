@@ -17,7 +17,8 @@ export const Main: React.FC = () => {
     const codeMirrorRef = useRef<any>(null);
 
 
-
+    // handleSelect handles the file selection from the explroer component
+    // Assumes files are located on a server exposed on port 8000 at /repos which it is during dev
     const handleSelect = async (filepath: string, code: string) => {
         console.log("Filepath", filepath);
 
@@ -35,20 +36,25 @@ export const Main: React.FC = () => {
         setSearchKeyword(code); // Update the search keyword state with the selected code
     };
 
+    // Effect hook to execute search in the CodeMirror editor when a file is selected
+    // Programatically execute actions within codeMirror to ctrl+F and input the query to search
+    // This takes the user directly to the location within codeMirror filecontent for smooth search.
     useEffect(() => {
         if (selectedFile && fileContent && codeMirrorRef.current && codeMirrorRef.current.view && searchKeyword) {
             console.log('File selected:', selectedFile);
             const view = codeMirrorRef.current.view;
-            openSearchPanel(view);
+            openSearchPanel(view); // This opens the ctrl + F panel within code mirror
     
-            const searchField = document.querySelector('.cm-panel input');
+            const searchField = document.querySelector('.cm-panel input'); // This is the search field in openSearchPanel to populate
     
             if (searchField instanceof HTMLInputElement && searchField !== null) {
-                // Get the first 20 characters of the searchKeyword
+                // Get the first 20 characters of the searchKeyword as threshold for search 
+                // Otherwise entire searchKeyword is too long
                 const truncatedSearchKeyword = searchKeyword.slice(0, 20);
                 console.log('Setting search keyword:', truncatedSearchKeyword);
                 searchField.value = truncatedSearchKeyword;
     
+                // Programtic event triggering for search within codeMirror
                 const inputEvent = new Event('input', { bubbles: true });
                 searchField.dispatchEvent(inputEvent);
     
@@ -66,7 +72,7 @@ export const Main: React.FC = () => {
                 searchField.dispatchEvent(enterEvent);
             }
         }
-    }, [selectedFile, fileContent, searchKeyword]); // Dependencies
+    }, [selectedFile, fileContent, searchKeyword]);
     
     return (
         <div className="grid gap-4 h-screen flex-1 overflow-auto px-4" style={{ backgroundColor: "#0D1116", gridTemplateColumns: "1fr 4fr" }}>

@@ -4,15 +4,15 @@ import axios from 'axios';
 import config from '../../common/config';
 
 interface ExplorerProps {
-  onSelect: (filepath: string, code: string) => void; // Updated to include code
+  onSelect: (filepath: string, code: string) => void;
 }
 
 export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState(''); 
-  const [prevQuery, setPrevQuery] = useState(''); // New state to keep track of the previous query
-  const [hasMore, setHasMore] = useState(true); // New state to track if more results are available
+  const [prevQuery, setPrevQuery] = useState(''); // New state to keep track of the previous query to handle search data reset
+  const [hasMore, setHasMore] = useState(true); // New state to track if more results are available for pagination
 
   const handleSearch = async (query: string, page: number) => {
     if (!query) return;
@@ -22,18 +22,19 @@ export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
       const server = config.backendServer
       const response = await axios.post(
           `http://${server}:8000/search`,
-          { query, skip, limit: 20 },  // Include skip and limit in the body
+          { query, skip, limit: 20 },  // Offset search results using skip and limit to 20 results per search
           { headers: { 'Content-Type': 'application/json' } }
       );
 
         const newResults = response.data.results;
         setSearchResults(page === 1 ? newResults : [...searchResults, ...newResults]);
-        setHasMore(newResults.length > 0);
+        setHasMore(newResults.length > 0); // Updates the 'hasMore' state to inform if more results are available for pagination
     } catch (error) {
         console.error('There was an error with the search!', error);
     }
   };
 
+  // This function handles the 'See More' button click to load more search results
   const handleSeeMore = () => {
     const newPage = page + 1;
     setPage(newPage);
@@ -41,6 +42,7 @@ export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
     console.log(`new page value: ${newPage}`)
   };
 
+  // useEffect hook to trigger the search operation whenever the query string changes
   useEffect(() => {
     handleSearch(query, 1);
   }, [query]);
