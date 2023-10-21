@@ -1,6 +1,6 @@
 {
     "index_defaults":{
         "model": "hf/all_datasets_v4_MiniLM-L6",
-        "normalize_embeddings":"True"
+        "normalize_embeddings":true
     }
 }

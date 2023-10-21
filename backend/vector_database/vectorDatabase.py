@@ -21,11 +21,12 @@ class VectorDatabase:
         """
         self.client = marqo.Client(url=endpoint)
 
-    def get_index(self, index_name: Optional[str] = "repo-index"):
-        """_summary_
+    def get_index(self, index_name: Optional[str] = "python-repo-index"):
+        """
+        Get the index if provided, otherwise use the default
 
         Args:
-            index_name (Optional[str], optional): Selected index name. Defaults to 'my-first-index'.
+            index_name (Optional[str], optional): Selected index name. Defaults to 'python-repo-index'.
         """
         self.index_name = index_name
 
@@ -38,10 +39,9 @@ class VectorDatabase:
             filepath (Optional[str], optional): File path to the index settings. Defaults to "./index_settings.json".
 
         Returns:
-            Dict: _description_
+            Dict: containing the settings for model and normalization.
         """
-        # TODO fix hardcoded vector_database
-        full_path = os.path.join(os.getcwd(), "vector_database", filepath)
+        full_path = os.path.join(os.getcwd(), filepath)
         with open(full_path) as f:
             index_settings = json.load(f)
         return index_settings
@@ -66,7 +66,8 @@ class VectorDatabase:
         index_name = self.index_name
         mq = self.client
         try:
-            mq.create_index(index_name, settings)
+            mq.create_index(index_name, settings_dict=settings)
+            print(f"Marqo index: {index_name} created")
         except marqo.errors.MarqoWebError as e:
             if e.code == "index_already_exists":
                 print(f"Index '{index_name}' already exists")
@@ -83,8 +84,12 @@ class VectorDatabase:
         """
         index_name = self.index_name
         mq = self.client
-
-        mq.index(index_name).add_documents(documents, tensor_fields=tensor_fields)
+        print(f"\nAdding documents to index: {index_name}")
+        response = mq.index(index_name).add_documents(
+            documents, tensor_fields=tensor_fields
+        )
+        print("\nDocuments successfully added!")
+        return response
 
     def query(self, q: str) -> list:
         """
@@ -104,3 +109,24 @@ class VectorDatabase:
             print(json.dumps(item, indent=4))
             results_list.append(item)
         return results_list
+
+    @staticmethod
+    def check_add_document_error(self, documents: list):
+        """
+        If errors occur during document add, call this to check.
+
+        Args:
+            documents (list): List of dictionaries showing erroneous documents
+
+        Exampel:
+          if document is too large with status code 400 this will append it to error_items.
+        """
+        all_items = documents["items"]
+        counter = 0
+        error_items = []
+        for item in all_items:
+            if item["status"] != 201:
+                error_items.append(item)
+                counter += 1
+
+        return error_items

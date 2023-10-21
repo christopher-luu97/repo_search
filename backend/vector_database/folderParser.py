@@ -41,7 +41,7 @@ class FolderParser:
         Returns:
             LANGUAGE (tuple): Tuple containing a tree_sitter.Language object and a string for file extension
         """
-        build_folder = os.path.join(os.getcwd(), "vector_database", build_folder)
+        build_folder = os.path.join(os.getcwd(), build_folder)
         LANGUAGE: Tuple[Language, str] = (
             Language(build_folder, language),
             file_extension,
@@ -69,20 +69,14 @@ class FolderParser:
         cursor.goto_first_child()
 
         while True:
-            print("type: ", cursor.node.type)
-            print(
-                "byte locations: ", cursor.node.start_byte, " - ", cursor.node.end_byte
-            )
             code: str = codestr[cursor.node.start_byte : cursor.node.end_byte]
             node_type: str = cursor.node.type
-            print("code:\n", code)
             code_filename: Dict[str, str] = {
                 "code": code,
                 "node_type": node_type,
                 "filepath": filepath,
             }
             if code.strip() != "":
-                print("code_filename: ", code_filename)
                 yield code_filename
 
             has_sibling = cursor.goto_next_sibling()

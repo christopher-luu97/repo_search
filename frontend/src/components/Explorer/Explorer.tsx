@@ -27,9 +27,9 @@ export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
             <div 
               key={index} 
               className="mx-4 p-4 border rounded cursor-pointer transition-all duration-300 ease-in-out hover:border-cyan-500 text-white overflow-hidden"
-              onClick={() => onSelect(result.filepath, result.code)} // Updated to include code
+              onClick={() => onSelect(result.filepath, result.code)}
                 >
-              <div className="font-bold">{fileName}</div>
+              <div className="font-bold overflow-auto scrollbar-hide">{fileName}</div>
               <div 
                 className="text-sm overflow-hidden"
                 style={{
