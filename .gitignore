@@ -8,3 +8,5 @@ utilities.py
 node_modules/
 __pycache__/
 *.pyc
+.python-version
+.DS_Store
