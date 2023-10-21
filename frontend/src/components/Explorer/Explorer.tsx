@@ -73,10 +73,11 @@ export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
             </div>
           );
         })}
-        {hasMore && (
-          <button onClick={handleSeeMore} className="mx-4 p-2 border rounded cursor-pointer text-white">
+        {hasMore && searchResults.length > 0 && (
+            <button onClick={handleSeeMore} 
+            className="mx-4 p-2 rounded cursor-pointer text-white bg-gray-700 hover:bg-gray-500">
             See More Results
-          </button>
+            </button>
         )}
       </div>
     </div>
