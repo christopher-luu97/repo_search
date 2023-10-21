@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { python } from '@codemirror/lang-python';
 import { Explorer } from '../Explorer/Explorer';
-import config from './config';
+import config from '../../common/config';
 import { CommandLineInterface } from '../CommandLine/CommandLineInterface';
 import { search, searchKeymap } from "@codemirror/search";
 import { keymap } from "@codemirror/view";
@@ -22,8 +22,9 @@ export const Main: React.FC = () => {
         console.log("Filepath", filepath);
 
         const basePath = config.basePath;
+        const server = config.backendServer
         const relativePath = filepath.replace(basePath, '');
-        const fileUrl = `http://127.0.0.1:8000/repos${relativePath}`;
+        const fileUrl = `http://${server}:8000/repos${relativePath}`;
 
         const response = await fetch(fileUrl);
         const content = await response.text();

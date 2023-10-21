@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
 import axios from 'axios';
+import config from '../../common/config';
 
 interface ExplorerProps {
   onSelect: (filepath: string, code: string) => void; // Updated to include code
@@ -18,8 +19,9 @@ export const Explorer: React.FC<ExplorerProps> = ({ onSelect }) => {
 
     try {
       const skip = (page - 1) * 20;  // Calculate the skip value based on the current page
+      const server = config.backendServer
       const response = await axios.post(
-          'http://127.0.0.1:8000/search',
+          `http://${server}:8000/search`,
           { query, skip, limit: 20 },  // Include skip and limit in the body
           { headers: { 'Content-Type': 'application/json' } }
       );

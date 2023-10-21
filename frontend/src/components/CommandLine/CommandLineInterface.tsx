@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, FormEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
+import config from '../../common/config';
 
 export const CommandLineInterface: React.FC = () => {
   const [lines, setLines] = useState<string[]>([]);
@@ -34,11 +35,11 @@ export const CommandLineInterface: React.FC = () => {
 
     setLines((prev) => [...prev, `(User) %  ${query}`]);
     setQuery('');
-
+    const model_server = config.modelAPI
     try {
       // Make a request to backend endpoint
       const response = await axios.post(
-        'http://localhost:5001/api/v1/generate',
+        model_server,
         { prompt: query,
           max_length : 512 },  // Currently hardcoded limit
         { headers: { 'Content-Type': 'application/json' } }

@@ -1,4 +1,6 @@
 # FRONTEND
 
-# File Explorer
-Adapting https://www.youtube.com/watch?v=YxsmlDdzrs8 which uses react-complex-tree to create the file explorer.
+To build just the frontend using the dockerfile:
+
+Execute:
+docker build -t frontend -f frontend.dockerfile .
