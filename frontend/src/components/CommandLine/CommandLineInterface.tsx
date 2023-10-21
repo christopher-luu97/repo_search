@@ -40,7 +40,7 @@ export const CommandLineInterface: React.FC = () => {
       const response = await axios.post(
         'http://localhost:5001/api/v1/generate',
         { prompt: query,
-          max_length : 512 }, 
+          max_length : 512 },  // Currently hardcoded limit
         { headers: { 'Content-Type': 'application/json' } }
       );
       setLoading(false)
