@@ -23,6 +23,8 @@ Inspired by the need for an efficient, secure, and offline tool to explore and i
 
 The application is structured to work offline, leveraging a proxy network server housed on a separate machine, ensuring all data and interactions remain internal and secure. All services, including the model API, are exposed via this internal server, accessible over Wifi for users aware of the machine's IP address.
 
+<img src="./system design/system_architecture.png" />
+
 ## Getting Started
 
 Navigate to /Frontend and /Backend and follow the steps in the README found in those folders respectively. This project requires users that wish to run this themselves to configure the application and build the dockerfiles themselves along with all the indexing as well.
