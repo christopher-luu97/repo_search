@@ -31,5 +31,5 @@ Navigate to /Frontend and /Backend and follow the steps in the README found in t
 These links specify key technologies used and point the reader towards further exploration if they wish to.
 
 * Marqo Search Engine: [Website](https://www.marqo.ai) and [Github](https://github.com/marqo-ai/marqo)
-* KoboldCPP: [Github](https://github.com/LostRuins/koboldcpp) and [API](https://petstore.swagger.io/?url=https://lite.koboldai.net/kobold_api.json) and [FAQ](https://github.com/LostRuins/koboldcpp/wiki)
+* KoboldCPP: [Github](https://github.com/LostRuins/koboldcpp) and [API](https://lite.koboldai.net/koboldcpp_api#/) and [FAQ](https://github.com/LostRuins/koboldcpp/wiki)
 * Various Language Model Links from TheBloke on Huggingface for LLMs: [TheBloke](https://huggingface.co/TheBloke)

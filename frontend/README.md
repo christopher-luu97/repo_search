@@ -25,7 +25,7 @@ Before building the frontend, you need to navigate to `src/common/config.ts` and
 The `modelAPI` used in this project is powered by `koboldCPP`, which initiates a server to leverage the API when hosted on a machine. You need to ensure that the paths correctly point to your machine's configuration, including the location of the backend server and the `modelAPI`.
 
 **Documentation:**  
-Detailed information on `koboldCPP` can be found [here](https://petstore.swagger.io/?url=https://lite.koboldai.net/kobold_api.json).
+Detailed information on `koboldCPP` can be found [here](https://lite.koboldai.net/koboldcpp_api#/).
 
 ##### Example Configuration
 Replace `<machine ip address>` and `<machine ip address:5001>` with actual IP addresses corresponding to your setup.
