@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sentence-transformers
+marqo
+pydantic
+tree-sitter
