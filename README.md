@@ -25,6 +25,8 @@ The application is structured to work offline, leveraging a proxy network server
 
 <img src="./system design/system_architecture.png" />
 
+<i><b>Note:</b> Pagination for search response works, firing off the query again but with a skip and offset to tell Marqo to grab the next 20 results which are appended to the initial results. This allows users to always see the top 20 results, and a button "See more results" queries the backend for additional responses.</i>
+
 ## Getting Started
 
 Navigate to /Frontend and /Backend and follow the steps in the README found in those folders respectively. This project requires users that wish to run this themselves to configure the application and build the dockerfiles themselves along with all the indexing as well.
