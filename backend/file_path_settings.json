@@ -1,3 +1,4 @@
 {
-    "FILE_PATHS": "/app/repos"
+    "FILE_PATHS": "/app/repos",
+    "MARQO_ENDPOINT":"<Your Marqo Endpoint>"
 }
