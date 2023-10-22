@@ -5,7 +5,7 @@
 This application is designed for in-depth, natural language searches within Python repositories, coupled with a sophisticated QnA feature to explore and understand the codebase effectively. It's built with privacy and security at its core, ensuring all searches and interactions occur offline, keeping your codebase and queries confidential.
 
 ## Demonstration Video:
-[Coming Soon!]
+[<img src="https://i.ytimg.com/vi/tcz7p1Tx0LY/maxresdefault.jpg" width="50%">](https://youtu.be/tcz7p1Tx0LY)
 
 ## Purpose
 
