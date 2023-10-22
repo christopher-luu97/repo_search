@@ -1,4 +1,4 @@
-# Adapted from: github.com/bebrws/openai-search-codebase-and-chat-abuot-it
+# Adapted from: github.com/bebrws/openai-search-codebase-and-chat-about-it
 
 import os
 import glob
