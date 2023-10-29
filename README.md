@@ -37,8 +37,3 @@ These links specify key technologies used and point the reader towards further e
 * Marqo Search Engine: [Website](https://www.marqo.ai) and [Github](https://github.com/marqo-ai/marqo)
 * KoboldCPP: [Github](https://github.com/LostRuins/koboldcpp) and [API](https://lite.koboldai.net/koboldcpp_api#/) and [FAQ](https://github.com/LostRuins/koboldcpp/wiki)
 * Various Language Model Links from TheBloke on Huggingface for LLMs: [TheBloke](https://huggingface.co/TheBloke)
-
-## Inspiration
-Inspiration for the project comes from [Bloop](https://bloop.ai) which does something similar but way better, however I wanted to see how I could build something similar myself with everything hosted locally. The initial thought I had was for how GitHub could be re-imagined through searching across repo's and thus I landed on the front-end design you see, which also mixes in the VSCode style interface for the navbar, main content where code is shown and a command-line style interface to chat with a large language model.
-
-The Marqo demo's that they have in their Github, articles and a presentation I attended in person (Shoutout to Owen Elliot, Solution Architect at Marqo for the awesome in-person demo) also provided a lot of ideas for how these processes work, especially in tasks following retrieval augmented generation (RAG), thus outlining the processes needed for me to build it myself.
