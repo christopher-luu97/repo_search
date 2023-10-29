@@ -45,4 +45,4 @@ docker run -v "/Users/Documents/repos":/app/repos -p 8000:8000 backend
 ```
 
 #### Additional Configuration
-You will need to index the modify `file_path_settings.json` and edit `MARQO_ENDPOINT` to where your Marqo instance is running (e.g. http://localhost:8882)
+You will need to the modify `file_path_settings.json` and edit `MARQO_ENDPOINT` to where your Marqo instance is running (e.g. http://localhost:8882)
